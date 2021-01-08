@@ -25,7 +25,7 @@ def configurations()
         section("Device")
         {
             input "devices", "device.easyrollsingle", title: "EasyRoll(DTH)", multiple: true, required: true
-            input "actions", "enum", title: "Action", multiple: false, required: true, options: ["UP", "STOP", "DOWN", "LEVEL", "JOG UP", "JOG DOWN", "M1", "M2", "M3"]
+            input "actions", "enum", title: "Action", multiple: false, required: true, options: ["UP", "STOP", "DOWN", "LEVEL", "JOG UP", "JOG DOWN", "M1", "M2", "M3","SETBOTTOM","SETTOP","REFRESH"]
         } 
         section("How")
         {
@@ -94,6 +94,7 @@ def installed()
 {
 	log.debug "Installed with settings: ${settings}."
 	initialize()
+    runEvery1Minute(refresh)
 }
 
 def updated()
@@ -134,6 +135,9 @@ def initialize()
         	schedule(time, alarmAction)
         break
     }
+   runEvery1Minute(device.refresh())    
+   runEvery5Minutes(device.refresh())    
+
 }
 
 def sunriseHandler()
@@ -248,6 +252,16 @@ def actionRun(){
             case "M3":
             	device.m3()
             break
+           case "SETBOTTOM":
+            	device.bottomSave()
+            break
+           case "SETTOP":
+            	device.topSave()
+            break
+            case "REFRESH" :
+            	device.refresh()
+            break
+      
         }
     }
 }
