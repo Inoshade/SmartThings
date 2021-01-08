@@ -94,7 +94,6 @@ def installed()
 {
 	log.debug "Installed with settings: ${settings}."
 	initialize()
-    runEvery1Minute(refresh)
 }
 
 def updated()
@@ -135,9 +134,6 @@ def initialize()
         	schedule(time, alarmAction)
         break
     }
-   runEvery1Minute(device.refresh())    
-   runEvery5Minutes(device.refresh())    
-
 }
 
 def sunriseHandler()
